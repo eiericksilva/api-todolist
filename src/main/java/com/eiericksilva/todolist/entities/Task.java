@@ -2,6 +2,9 @@ package com.eiericksilva.todolist.entities;
 
 import java.time.LocalDateTime;
 
+import com.eiericksilva.todolist.entities.enums.Category;
+import com.eiericksilva.todolist.entities.enums.Priority;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,15 +24,21 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private Category category;
+
+    private Priority priority;
+
     public Task() {
     }
 
-    public Task(Long id, String title, String description, Boolean isCompleted, LocalDateTime createdAt,
+    public Task(Long id, String title, String description, Boolean isCompleted, Category category, Priority priority,
+            LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.isCompleted = isCompleted;
+        setCategory(category);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -80,6 +89,22 @@ public class Task {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
     @Override
