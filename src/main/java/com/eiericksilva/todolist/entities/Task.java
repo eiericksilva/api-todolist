@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 
 import com.eiericksilva.todolist.entities.enums.Category;
 import com.eiericksilva.todolist.entities.enums.Priority;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +27,13 @@ public class Task {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    private LocalDateTime deadline;
+
     private Category category;
 
     private Priority priority;
@@ -31,9 +41,16 @@ public class Task {
     public Task() {
     }
 
-    public Task(Long id, String title, String description, Boolean isCompleted, Category category, Priority priority,
+    public Task(
+            Long id,
+            String title,
+            String description,
+            Boolean isCompleted,
+            Category category,
+            Priority priority,
             LocalDateTime createdAt,
-            LocalDateTime updatedAt) {
+            LocalDateTime updatedAt,
+            LocalDateTime deadline) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -105,6 +122,14 @@ public class Task {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 
     @Override

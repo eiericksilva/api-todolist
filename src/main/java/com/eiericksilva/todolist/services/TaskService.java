@@ -11,9 +11,13 @@ import com.eiericksilva.todolist.repositories.TaskRepository;
 @Service
 public class TaskService {
     @Autowired
-    private TaskRepository repository;
+    private TaskRepository taskRepository;
 
     public List<Task> findAll() {
-        return repository.findAll();
+        return taskRepository.findAll();
+    }
+
+    public Task create(Task task) {
+        return taskRepository.save(task);
     }
 }
