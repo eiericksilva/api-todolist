@@ -1,17 +1,21 @@
 package com.eiericksilva.todolist.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.eiericksilva.todolist.entities.enums.Category;
 import com.eiericksilva.todolist.entities.enums.Priority;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,21 +28,28 @@ public class Task {
     private String title;
     private String description;
     private Boolean isCompleted;
+
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
-    private LocalDateTime deadline;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate deadline;
 
     private Category category;
 
     private Priority priority;
 
     public Task() {
+        isCompleted = false;
+        LocalDateTime now = LocalDateTime.now();
+        createdAt = now;
+        updatedAt = now;
     }
 
     public Task(
@@ -50,14 +61,15 @@ public class Task {
             Priority priority,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            LocalDateTime deadline) {
+            LocalDate deadline) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.isCompleted = isCompleted;
         setCategory(category);
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
+        this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
+        this.deadline = deadline;
     }
 
     public Long getId() {
@@ -124,12 +136,24 @@ public class Task {
         this.priority = priority;
     }
 
-    public LocalDateTime getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        createdAt = now;
+        updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
     @Override
