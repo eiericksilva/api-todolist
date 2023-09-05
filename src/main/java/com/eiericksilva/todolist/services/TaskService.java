@@ -30,18 +30,18 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public Task update(Long id, Task newDataTask) {
+    public Task update(Long id, Task newTaskData) {
         Task taskRef = taskRepository.getReferenceById(id);
-        updateDataTask(taskRef, newDataTask);
+        updateTaskData(taskRef, newTaskData);
         return taskRepository.save(taskRef);
     }
 
-    private void updateDataTask(Task taskRef, Task newDataTask) {
-        taskRef.setTitle(newDataTask.getTitle());
-        taskRef.setDescription(newDataTask.getDescription());
-        taskRef.setIsCompleted(newDataTask.getIsCompleted());
-        taskRef.setDeadline(newDataTask.getDeadline());
-        taskRef.setCategory(newDataTask.getCategory());
-        taskRef.setPriority(newDataTask.getPriority());
+    private void updateTaskData(Task taskRef, Task newTaskData) {
+        taskRef.setTitle(newTaskData.getTitle());
+        taskRef.setDescription(newTaskData.getDescription());
+        taskRef.setIsCompleted(newTaskData.getIsCompleted());
+        taskRef.setDeadline(newTaskData.getDeadline());
+        taskRef.setCategory(newTaskData.getCategory());
+        taskRef.setPriority(newTaskData.getPriority());
     }
 }
