@@ -1,6 +1,7 @@
 package com.eiericksilva.todolist.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,12 @@ public class TaskController {
         return ResponseEntity.ok().body(tasks);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Optional<Task>> findById(@PathVariable Long id) {
+        var task = taskService.findById(id);
+        return ResponseEntity.ok().body(task);
+    }
+
     @PostMapping
     public ResponseEntity<Task> create(@RequestBody Task task) {
 
@@ -41,4 +48,5 @@ public class TaskController {
 
         return ResponseEntity.noContent().build();
     }
+
 }
