@@ -31,9 +31,14 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Task>> findById(@PathVariable Long id) {
-        var task = taskService.findById(id);
-        return ResponseEntity.ok().body(task);
+    public ResponseEntity<Task> findById(@PathVariable Long id) {
+        Optional<Task> task = taskService.findById(id);
+
+        if (task.isPresent()) {
+            return ResponseEntity.ok(task.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping

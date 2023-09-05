@@ -21,6 +21,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_task")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
