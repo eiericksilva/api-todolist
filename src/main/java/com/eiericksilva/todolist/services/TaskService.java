@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eiericksilva.todolist.entities.Task;
+import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.TaskRepository;
 
 @Service
@@ -18,8 +19,11 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public Optional<Task> findById(Long id) {
-        return taskRepository.findById(id);
+    public Task findById(Long id) {
+
+        Optional<Task> task = taskRepository.findById(id);
+
+        return task.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Task create(Task task) {
