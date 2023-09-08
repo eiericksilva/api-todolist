@@ -1,6 +1,7 @@
 package com.eiericksilva.todolist.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,9 +47,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid User user) {
-        var userUpdated = userService.update(id, user);
+    public Optional<User> update(@PathVariable Long id, @RequestBody @Valid User user) {
+        return userService.update(id, user);
 
-        return ResponseEntity.ok().body(userUpdated);
     }
 }

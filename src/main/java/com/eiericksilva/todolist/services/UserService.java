@@ -1,11 +1,13 @@
 package com.eiericksilva.todolist.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eiericksilva.todolist.entities.User;
+import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.UserRepository;
 
 @Service
@@ -23,19 +25,18 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        userRepository.deleteById(id);
-
+        userRepository.delete(
+                userRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
-    public User update(Long id, User newUserData) {
-        User userRef = userRepository.getReferenceById(id);
-        updateUserData(userRef, newUserData);
-        return userRepository.save(userRef);
-    }
-
-    private void updateUserData(User userRef, User newUserData) {
-        userRef.setName(newUserData.getName());
-        userRef.setPassword(newUserData.getPassword());
+    public Optional<User> update(Long id, User newUserData) {
+        return userRepository.findById(id)
+                .map(userFound -> {
+                    userFound.setName(newUserData.getName());
+                    userFound.setPassword(newUserData.getPassword());
+                    return userRepository.save(userFound);
+                });
     }
 
 }
