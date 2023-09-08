@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_task")
@@ -26,8 +27,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String title;
+
+    @NotNull
     private String description;
+
     private Boolean isCompleted;
 
     @Column(updatable = false)
@@ -42,8 +47,10 @@ public class Task {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate deadline;
 
+    @NotNull
     private Category category;
 
+    @NotNull
     private Priority priority;
 
     public Task() {

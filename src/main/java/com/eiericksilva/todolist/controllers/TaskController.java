@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eiericksilva.todolist.entities.Task;
 import com.eiericksilva.todolist.services.TaskService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -36,7 +38,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> create(@RequestBody Task task) {
+    public ResponseEntity<Task> create(@RequestBody @Valid Task task) {
         var taskObj = taskService.create(task);
         return ResponseEntity.ok().body(taskObj);
     }
@@ -47,7 +49,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task task) {
+    public ResponseEntity<Task> update(@PathVariable @Valid Long id, @RequestBody Task task) {
         var taskUpdated = taskService.update(id, task);
         return ResponseEntity.ok().body(taskUpdated);
     }

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eiericksilva.todolist.entities.User;
 import com.eiericksilva.todolist.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -31,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User obj) {
+    public ResponseEntity<User> create(@RequestBody @Valid User obj) {
         var newUser = userService.create(obj);
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
@@ -44,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid User user) {
         var userUpdated = userService.update(id, user);
 
         return ResponseEntity.ok().body(userUpdated);

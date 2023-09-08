@@ -3,12 +3,15 @@ package com.eiericksilva.todolist.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_user")
@@ -18,7 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String name;
+
+    @NotNull
+    @Length(min = 5, max = 250)
     private String password;
 
     @OneToMany(mappedBy = "user")
