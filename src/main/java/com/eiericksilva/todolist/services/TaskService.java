@@ -31,11 +31,14 @@ public class TaskService {
     }
 
     public void delete(Long id) {
-        taskRepository.deleteById(id);
+        taskRepository.delete(
+                taskRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
     public Task update(Long id, Task newTaskData) {
         Task taskRef = taskRepository.getReferenceById(id);
+
         updateTaskData(taskRef, newTaskData);
         return taskRepository.save(taskRef);
     }

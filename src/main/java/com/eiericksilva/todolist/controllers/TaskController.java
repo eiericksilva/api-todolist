@@ -37,16 +37,13 @@ public class TaskController {
 
     @PostMapping
     public ResponseEntity<Task> create(@RequestBody Task task) {
-
         var taskObj = taskService.create(task);
         return ResponseEntity.ok().body(taskObj);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         taskService.delete(id);
-
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
