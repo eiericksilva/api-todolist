@@ -34,9 +34,8 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Task> findById(@PathVariable Long id) {
-        var task = taskService.findById(id);
-        return ResponseEntity.ok().body(task);
+    public Task findById(@PathVariable Long id) {
+        return taskService.findById(id);
     }
 
     @PostMapping
@@ -45,8 +44,8 @@ public class TaskController {
         return taskService.create(task);
     }
 
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         taskService.delete(id);
     }
