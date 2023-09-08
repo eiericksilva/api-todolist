@@ -50,7 +50,9 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> update(@PathVariable @Valid Long id, @RequestBody Task task) {
-        var taskUpdated = taskService.update(id, task);
-        return ResponseEntity.ok().body(taskUpdated);
+        return taskService.update(id, task)
+                .map(taskFound -> ResponseEntity.ok().body(taskFound))
+                .orElse(ResponseEntity.notFound().build());
+
     }
 }

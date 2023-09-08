@@ -36,19 +36,16 @@ public class TaskService {
                         .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
-    public Task update(Long id, Task newTaskData) {
-        Task taskRef = taskRepository.getReferenceById(id);
-
-        updateTaskData(taskRef, newTaskData);
-        return taskRepository.save(taskRef);
-    }
-
-    private void updateTaskData(Task taskRef, Task newTaskData) {
-        taskRef.setTitle(newTaskData.getTitle());
-        taskRef.setDescription(newTaskData.getDescription());
-        taskRef.setIsCompleted(newTaskData.getIsCompleted());
-        taskRef.setDeadline(newTaskData.getDeadline());
-        taskRef.setCategory(newTaskData.getCategory());
-        taskRef.setPriority(newTaskData.getPriority());
+    public Optional<Task> update(Long id, Task newTaskData) {
+        return taskRepository.findById(id)
+                .map(taskFound -> {
+                    taskFound.setTitle(newTaskData.getTitle());
+                    taskFound.setDescription(newTaskData.getDescription());
+                    taskFound.setIsCompleted(newTaskData.getIsCompleted());
+                    taskFound.setDeadline(newTaskData.getDeadline());
+                    taskFound.setCategory(newTaskData.getCategory());
+                    taskFound.setPriority(newTaskData.getPriority());
+                    return taskRepository.save(taskFound);
+                });
     }
 }
