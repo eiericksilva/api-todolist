@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eiericksilva.todolist.entities.User;
@@ -28,15 +29,14 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
-        var listUser = userService.findAll();
-        return new ResponseEntity<List<User>>(listUser, HttpStatus.OK);
+    public List<User> findAll() {
+        return userService.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody @Valid User obj) {
-        var newUser = userService.create(obj);
-        return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public User create(@RequestBody @Valid User obj) {
+        return userService.create(obj);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -47,8 +47,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public Optional<User> update(@PathVariable Long id, @RequestBody @Valid User user) {
+    public User update(@PathVariable Long id, @RequestBody @Valid User user) {
         return userService.update(id, user);
-
     }
 }

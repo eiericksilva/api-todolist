@@ -1,8 +1,6 @@
 package com.eiericksilva.todolist.services;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +28,13 @@ public class UserService {
                         .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
-    public Optional<User> update(Long id, User newUserData) {
+    public User update(Long id, User newUserData) {
         return userRepository.findById(id)
                 .map(userFound -> {
                     userFound.setName(newUserData.getName());
                     userFound.setPassword(newUserData.getPassword());
                     return userRepository.save(userFound);
-                });
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
-
 }
