@@ -3,6 +3,7 @@ package com.eiericksilva.todolist.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eiericksilva.todolist.entities.Task;
@@ -38,21 +40,19 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> create(@RequestBody @Valid Task task) {
-        var taskObj = taskService.create(task);
-        return ResponseEntity.ok().body(taskObj);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Task create(@RequestBody @Valid Task task) {
+        return taskService.create(task);
     }
 
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         taskService.delete(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> update(@PathVariable @Valid Long id, @RequestBody Task task) {
-        return taskService.update(id, task)
-                .map(taskFound -> ResponseEntity.ok().body(taskFound))
-                .orElse(ResponseEntity.notFound().build());
-
+    public Task update(@PathVariable @Valid Long id, @RequestBody Task task) {
+        return taskService.update(id, task);
     }
 }

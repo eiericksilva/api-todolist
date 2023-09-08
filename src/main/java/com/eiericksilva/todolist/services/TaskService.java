@@ -1,8 +1,6 @@
 package com.eiericksilva.todolist.services;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +18,8 @@ public class TaskService {
     }
 
     public Task findById(Long id) {
-
-        Optional<Task> task = taskRepository.findById(id);
-
-        return task.orElseThrow(() -> new ResourceNotFoundException(id));
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Task create(Task task) {
@@ -36,7 +32,7 @@ public class TaskService {
                         .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
-    public Optional<Task> update(Long id, Task newTaskData) {
+    public Task update(Long id, Task newTaskData) {
         return taskRepository.findById(id)
                 .map(taskFound -> {
                     taskFound.setTitle(newTaskData.getTitle());
@@ -46,6 +42,6 @@ public class TaskService {
                     taskFound.setCategory(newTaskData.getCategory());
                     taskFound.setPriority(newTaskData.getPriority());
                     return taskRepository.save(taskFound);
-                });
+                }).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 }
