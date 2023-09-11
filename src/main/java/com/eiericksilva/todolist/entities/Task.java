@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import com.eiericksilva.todolist.entities.enums.Category;
 import com.eiericksilva.todolist.entities.enums.Priority;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,6 +42,7 @@ public class Task {
     private LocalDateTime updatedAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -75,6 +77,7 @@ public class Task {
         this.description = description;
         this.isCompleted = isCompleted;
         setCategory(category);
+        setPriority(priority);
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
         this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
         this.deadline = deadline;
@@ -152,6 +155,14 @@ public class Task {
         this.deadline = deadline;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
@@ -188,5 +199,4 @@ public class Task {
             return false;
         return true;
     }
-
 }

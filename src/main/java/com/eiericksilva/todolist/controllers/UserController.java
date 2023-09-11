@@ -1,8 +1,6 @@
 package com.eiericksilva.todolist.controllers;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +29,11 @@ public class UserController {
     @GetMapping
     public List<User> findAll() {
         return userService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public User findById(@PathVariable Long id) {
+        return userService.findById(id);
     }
 
     @PostMapping

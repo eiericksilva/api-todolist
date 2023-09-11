@@ -18,6 +18,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
     public User create(User user) {
         return userRepository.save(user);
     }
