@@ -21,8 +21,10 @@ public class UserService {
         return userRepository.findAll().stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
     }
 
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+    public UserDTO findById(Long id) {
+        return userRepository.findById(id)
+                .map(user -> new UserDTO(user))
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User create(User user) {
