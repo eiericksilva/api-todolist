@@ -27,8 +27,8 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public User create(User user) {
-        return userRepository.save(user);
+    public UserDTO create(User user) {
+        return new UserDTO(userRepository.save(user));
     }
 
     public void delete(Long id) {
@@ -37,12 +37,14 @@ public class UserService {
                         .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
-    public User update(Long id, User newUserData) {
+    public UserDTO update(Long id, User newUserData) {
         return userRepository.findById(id)
                 .map(userFound -> {
                     userFound.setName(newUserData.getName());
                     userFound.setPassword(newUserData.getPassword());
-                    return userRepository.save(userFound);
+
+                    User updatedUser = userRepository.save(userFound);
+                    return new UserDTO(updatedUser);
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }

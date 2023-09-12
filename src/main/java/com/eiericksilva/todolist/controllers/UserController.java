@@ -40,7 +40,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User create(@RequestBody @Valid User obj) {
+    public UserDTO create(@RequestBody @Valid User obj) {
         return userService.create(obj);
     }
 
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody @Valid User user) {
+    public UserDTO update(@PathVariable Long id, @RequestBody @Valid User user) {
         return userService.update(id, user);
     }
 }
