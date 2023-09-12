@@ -1,6 +1,8 @@
 package com.eiericksilva.todolist.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eiericksilva.todolist.dto.UserDTO;
 import com.eiericksilva.todolist.entities.User;
 import com.eiericksilva.todolist.services.UserService;
 
@@ -27,8 +30,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> findAll() {
-        return userService.findAll();
+    public List<UserDTO> findAll() {
+        return userService.findAll().stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
