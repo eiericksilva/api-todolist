@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eiericksilva.todolist.dto.UserDTO;
 import com.eiericksilva.todolist.entities.User;
 import com.eiericksilva.todolist.services.UserService;
 
@@ -29,18 +28,18 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<UserDTO> findAll() {
+    public List<User> findAll() {
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public UserDTO findById(@PathVariable Long id) {
+    public User findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public UserDTO create(@RequestBody @Valid User obj) {
+    public User create(@RequestBody @Valid User obj) {
         return userService.create(obj);
     }
 
@@ -52,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTO update(@PathVariable Long id, @RequestBody @Valid User user) {
+    public User update(@PathVariable Long id, @RequestBody @Valid User user) {
         return userService.update(id, user);
     }
 }
