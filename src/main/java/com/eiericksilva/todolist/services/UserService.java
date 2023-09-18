@@ -1,7 +1,11 @@
 package com.eiericksilva.todolist.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.eiericksilva.todolist.dto.request.UserRequestDto;
+import com.eiericksilva.todolist.dto.response.UserResponseDto;
+import com.eiericksilva.todolist.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +19,22 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserResponseDto> findAll() {
+        var users = userRepository.findAll();
+        return users.stream()
+                .map(UserMapper::toUserResponseDto)
+                .collect(Collectors.toList());
     }
 
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-
+    public UserResponseDto findById(Long id) {
+         return userRepository.findById(id).map(UserMapper::toUserResponseDto)
+                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public User create(User user) {
-        return (userRepository.save(user));
+    public UserResponseDto create(UserRequestDto userRequestDto) {
+        var userEntity = UserMapper.toUser(userRequestDto);
+        userRepository.save(userEntity);
+        return UserMapper.toUserResponseDto(userEntity);
     }
 
     public void delete(Long id) {
@@ -34,13 +43,13 @@ public class UserService {
                         .orElseThrow(() -> new ResourceNotFoundException(id)));
     }
 
-    public User update(Long id, User newUserData) {
+    public UserResponseDto update(Long id, UserRequestDto newUserData) {
         return userRepository.findById(id)
                 .map(userFound -> {
                     userFound.setName(newUserData.getName());
                     userFound.setPassword(newUserData.getPassword());
 
-                    return userRepository.save(userFound);
+                    return UserMapper.toUserResponseDto(userRepository.save(userFound));
                 })
                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }

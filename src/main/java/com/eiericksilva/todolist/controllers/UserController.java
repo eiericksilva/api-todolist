@@ -2,6 +2,8 @@ package com.eiericksilva.todolist.controllers;
 
 import java.util.List;
 
+import com.eiericksilva.todolist.dto.request.UserRequestDto;
+import com.eiericksilva.todolist.dto.response.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,18 +30,18 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> findAll() {
+    public List<UserResponseDto> findAll() {
         return userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable Long id) {
+    public UserResponseDto findById(@PathVariable Long id) {
         return userService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User create(@RequestBody @Valid User obj) {
+    public UserResponseDto create(@RequestBody @Valid UserRequestDto obj) {
         return userService.create(obj);
     }
 
@@ -51,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody @Valid User user) {
+    public UserResponseDto update(@PathVariable Long id, @RequestBody @Valid UserRequestDto user) {
         return userService.update(id, user);
     }
 }
