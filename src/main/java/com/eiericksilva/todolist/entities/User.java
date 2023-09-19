@@ -94,4 +94,8 @@ public class User {
             return false;
         return true;
     }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
 }
