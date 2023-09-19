@@ -6,7 +6,7 @@ import com.eiericksilva.todolist.entities.User;
 
 public class UserMapper {
 
-    public static User toUser(UserRequestDto userRequestDto){
+    public static User toUser(UserRequestDto userRequestDto) {
         User user = new User();
 
         user.setName(userRequestDto.getName());
@@ -15,11 +15,11 @@ public class UserMapper {
         return user;
     }
 
-    public static UserResponseDto toUserResponseDto(User user){
+    public static UserResponseDto toUserResponseDto(User user) {
         UserResponseDto userDto = new UserResponseDto();
 
-        user.setId(user.getId());
-        user.setName(user.getName());
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
 
         return userDto;
     }

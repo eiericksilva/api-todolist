@@ -9,7 +9,6 @@ import com.eiericksilva.todolist.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eiericksilva.todolist.entities.User;
 import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.UserRepository;
 
@@ -27,8 +26,8 @@ public class UserService {
     }
 
     public UserResponseDto findById(Long id) {
-         return userRepository.findById(id).map(UserMapper::toUserResponseDto)
-                 .orElseThrow(() -> new ResourceNotFoundException(id));
+        return userRepository.findById(id).map(UserMapper::toUserResponseDto)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public UserResponseDto create(UserRequestDto userRequestDto) {

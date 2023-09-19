@@ -1,9 +1,9 @@
 package com.eiericksilva.todolist.dto.request;
 
 import com.eiericksilva.todolist.entities.Task;
-import lombok.*;
 
 import java.util.List;
+
 public class UserRequestDto {
     private String name;
     private String password;
