@@ -1,17 +1,22 @@
 package com.eiericksilva.todolist.services;
 
-import java.util.List;
+import com.eiericksilva.todolist.entities.Task;
+import com.eiericksilva.todolist.entities.User;
+import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
+import com.eiericksilva.todolist.repositories.TaskRepository;
+import com.eiericksilva.todolist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eiericksilva.todolist.entities.Task;
-import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
-import com.eiericksilva.todolist.repositories.TaskRepository;
+import java.util.List;
 
 @Service
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Task> findAll() {
         return taskRepository.findAll();
@@ -22,7 +27,12 @@ public class TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Task create(Task task) {
+    public Task create(Long userId, Task task) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        user.getTasks().add(task);
+
+        task.setUser(user);
+
         return taskRepository.save(task);
     }
 

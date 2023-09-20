@@ -38,10 +38,10 @@ public class TaskController {
         return taskService.findById(id);
     }
 
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Task create(@RequestBody @Valid Task task) {
-        return taskService.create(task);
+    public Task create( @Valid @PathVariable Long userId, @RequestBody Task task) {
+        return taskService.create(userId, task);
     }
 
     @DeleteMapping("/{id}")

@@ -56,8 +56,9 @@ public class Task {
     private Priority priority;
 
     public Task() {
-        isCompleted = false;
         LocalDateTime now = LocalDateTime.now();
+
+        isCompleted = false;
         createdAt = now;
         updatedAt = now;
     }
@@ -198,5 +199,21 @@ public class Task {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", isCompleted=" + isCompleted +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", user=" + user +
+                ", deadline=" + deadline +
+                ", category=" + category +
+                ", priority=" + priority +
+                '}';
     }
 }
