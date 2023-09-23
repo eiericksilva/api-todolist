@@ -2,7 +2,10 @@ package com.eiericksilva.todolist.mapper;
 
 import com.eiericksilva.todolist.dto.request.UserRequestDto;
 import com.eiericksilva.todolist.dto.response.UserResponseDto;
+import com.eiericksilva.todolist.entities.Task;
 import com.eiericksilva.todolist.entities.User;
+
+import java.util.List;
 
 public class UserMapper {
 
@@ -11,8 +14,11 @@ public class UserMapper {
 
         user.setName(userRequestDto.getName());
         user.setPassword(userRequestDto.getPassword());
-        user.setTasks(userRequestDto.getTasks());
 
+        List<Task> tasksToAdd = userRequestDto.getTasks();
+        for (Task task : tasksToAdd) {
+            user.addTask(task);
+        }
         return user;
     }
 
@@ -21,8 +27,11 @@ public class UserMapper {
 
         userDto.setId(user.getId());
         userDto.setName(user.getName());
-        userDto.setTasks(user.getTasks());
 
+        List<Task> taskToAdd = user.getTasks();
+        for (Task task: taskToAdd) {
+            userDto.addTask(task);
+        }
         return userDto;
     }
 }

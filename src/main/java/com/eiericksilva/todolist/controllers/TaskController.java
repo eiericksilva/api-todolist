@@ -21,37 +21,37 @@ import com.eiericksilva.todolist.services.TaskService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/users/{userId}/tasks")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
     @GetMapping
-    public ResponseEntity<List<Task>> findAll() {
-        List<Task> tasks = taskService.findAll();
+    public ResponseEntity<List<Task>> findAll(@PathVariable Long userId) {
+        List<Task> tasks = taskService.findAllTasksByUserId(userId);
         return ResponseEntity.ok().body(tasks);
     }
 
-    @GetMapping("/{id}")
-    public Task findById(@PathVariable Long id) {
-        return taskService.findById(id);
-    }
-
-    @PostMapping("/{userId}")
+    @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Task create( @Valid @PathVariable Long userId, @RequestBody Task task) {
-        return taskService.create(userId, task);
+        return taskService.createTask(userId, task);
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/{taskId}")
+    public Task findById(@PathVariable Long taskId) {
+        return taskService.findTaskById(taskId);
+    }
+
+    @DeleteMapping("/{taskId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        taskService.delete(id);
+    public void delete(@PathVariable Long userId, @PathVariable Long taskId) {
+        taskService.delete(userId, taskId);
     }
 
-    @PutMapping("/{id}")
-    public Task update(@PathVariable @Valid Long id, @RequestBody Task task) {
-        return taskService.update(id, task);
+    @PutMapping("/{taskId}")
+    public Task update(@PathVariable @Valid Long taskId, @RequestBody Task task) {
+        return taskService.update(taskId, task);
     }
 }

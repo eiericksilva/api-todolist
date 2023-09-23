@@ -72,7 +72,8 @@ public class Task {
             Priority priority,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            LocalDate deadline) {
+            LocalDate deadline
+    ) {
         this.id = id;
         this.title = title;
         this.description = description;

@@ -18,16 +18,12 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
-    }
+    public List<Task> findAllTasksByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
 
-    public Task findById(Long id) {
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+        return user.getTasks();
     }
-
-    public Task create(Long userId, Task task) {
+    public Task createTask(Long userId, Task task) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
         user.getTasks().add(task);
 
@@ -35,15 +31,20 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
-
-    public void delete(Long id) {
-        taskRepository.delete(
-                taskRepository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException(id)));
-    }
-
-    public Task update(Long id, Task newTaskData) {
+    public Task findTaskById(Long id) {
         return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+    public void delete(Long userId, Long taskId) {
+        User userFound = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        Task taskToDelete = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
+
+        userFound.removeTask(taskToDelete);
+        taskRepository.delete(taskToDelete);
+
+    }
+    public Task update(Long taskId, Task newTaskData) {
+        return taskRepository.findById(taskId)
                 .map(taskFound -> {
                     taskFound.setTitle(newTaskData.getTitle());
                     taskFound.setDescription(newTaskData.getDescription());
@@ -52,6 +53,6 @@ public class TaskService {
                     taskFound.setCategory(newTaskData.getCategory());
                     taskFound.setPriority(newTaskData.getPriority());
                     return taskRepository.save(taskFound);
-                }).orElseThrow(() -> new ResourceNotFoundException(id));
+                }).orElseThrow(() -> new ResourceNotFoundException(taskId));
     }
 }
