@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.zip.DataFormatException;
 
 @Service
 public class TaskService {
@@ -37,9 +35,9 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
-    public Task findTaskById(Long id) {
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+    public Task findTaskById(Long taskId) {
+        return taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException(taskId));
     }
     public void delete(Long userId, Long taskId) {
         User userFound = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
@@ -49,6 +47,14 @@ public class TaskService {
         taskRepository.delete(taskToDelete);
 
     }
+
+    public Task handleTaskIsCompleted(Long taskId){
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
+
+        task.setIsCompleted(!task.getIsCompleted());
+        return taskRepository.save(task);
+    }
+
     public Task update(Long taskId, Task newTaskData) {
         checkingDeadline(newTaskData.getDeadline());
         return taskRepository.findById(taskId)
