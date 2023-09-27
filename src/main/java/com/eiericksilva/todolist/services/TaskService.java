@@ -28,7 +28,7 @@ public class TaskService {
         return user.getTasks();
     }
     public Task createTask(Long userId, Task task) {
-        checkingDeadline(task);
+        checkingDeadline(task.getDeadline());
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
         user.getTasks().add(task);
@@ -50,7 +50,7 @@ public class TaskService {
 
     }
     public Task update(Long taskId, Task newTaskData) {
-        checkingDeadline(newTaskData);
+        checkingDeadline(newTaskData.getDeadline());
         return taskRepository.findById(taskId)
                 .map(taskFound -> {
                     taskFound.setTitle(newTaskData.getTitle());
@@ -63,9 +63,8 @@ public class TaskService {
                 }).orElseThrow(() -> new ResourceNotFoundException(taskId));
     }
 
-    public void checkingDeadline(Task task) {
+    public void checkingDeadline(LocalDate deadline) {
         LocalDate now = LocalDate.now();
-        LocalDate deadline = task.getDeadline();
 
         if (deadline.isBefore(now)) {
             throw new DataInvalidException(deadline);
