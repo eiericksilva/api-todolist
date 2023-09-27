@@ -2,6 +2,7 @@ package com.eiericksilva.todolist.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import com.eiericksilva.todolist.entities.enums.Category;
 import com.eiericksilva.todolist.entities.enums.Priority;
@@ -48,6 +49,8 @@ public class Task {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate deadline;
 
+    private Long daysLeft;
+
     @NotNull
     private Category category;
 
@@ -71,7 +74,8 @@ public class Task {
             Priority priority,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            LocalDate deadline
+            LocalDate deadline,
+            Long daysLeft
     ) {
         this.id = id;
         this.title = title;
@@ -82,6 +86,18 @@ public class Task {
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
         this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
         this.deadline = deadline;
+        this.daysLeft = daysLeft;
+    }
+
+    public Long getDaysLeft() {
+        return daysLeft;
+    }
+
+    public Long calculateDaysLeft() {
+        LocalDate deadline = this.deadline;
+        LocalDate now = LocalDate.now();
+
+        return this.daysLeft = ChronoUnit.DAYS.between(now, deadline);
     }
 
     public Long getId() {
@@ -154,6 +170,7 @@ public class Task {
 
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+        this.daysLeft = calculateDaysLeft();
     }
 
     public User getUser() {
