@@ -15,10 +15,8 @@ public class UserMapper {
         user.setName(userRequestDto.getName());
         user.setPassword(userRequestDto.getPassword());
 
-        List<Task> tasksToAdd = userRequestDto.getTasks();
-        for (Task task : tasksToAdd) {
-            user.addTask(task);
-        }
+        userRequestDto.getTasks().forEach(user::addTask);
+
         return user;
     }
 
@@ -28,10 +26,8 @@ public class UserMapper {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
 
-        List<Task> taskToAdd = user.getTasks();
-        for (Task task: taskToAdd) {
-            userDto.addTask(task);
-        }
+        user.getTasks().forEach(userDto::addTask);
+
         return userDto;
     }
 }

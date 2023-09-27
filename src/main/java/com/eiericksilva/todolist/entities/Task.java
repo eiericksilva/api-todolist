@@ -45,7 +45,6 @@ public class Task {
     @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate deadline;
 

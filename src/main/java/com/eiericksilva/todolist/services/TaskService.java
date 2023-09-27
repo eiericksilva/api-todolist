@@ -2,13 +2,17 @@ package com.eiericksilva.todolist.services;
 
 import com.eiericksilva.todolist.entities.Task;
 import com.eiericksilva.todolist.entities.User;
+import com.eiericksilva.todolist.exceptions.DataInvalidException;
 import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.TaskRepository;
 import com.eiericksilva.todolist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 @Service
 public class TaskService {
@@ -24,6 +28,8 @@ public class TaskService {
         return user.getTasks();
     }
     public Task createTask(Long userId, Task task) {
+        checkingDeadline(task);
+
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
         user.getTasks().add(task);
 
@@ -44,6 +50,7 @@ public class TaskService {
 
     }
     public Task update(Long taskId, Task newTaskData) {
+        checkingDeadline(newTaskData);
         return taskRepository.findById(taskId)
                 .map(taskFound -> {
                     taskFound.setTitle(newTaskData.getTitle());
@@ -54,5 +61,14 @@ public class TaskService {
                     taskFound.setPriority(newTaskData.getPriority());
                     return taskRepository.save(taskFound);
                 }).orElseThrow(() -> new ResourceNotFoundException(taskId));
+    }
+
+    public void checkingDeadline(Task task) {
+        LocalDate now = LocalDate.now();
+        LocalDate deadline = task.getDeadline();
+
+        if (deadline.isBefore(now)) {
+            throw new DataInvalidException(deadline);
+        }
     }
 }

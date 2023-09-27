@@ -13,10 +13,6 @@ public enum Priority {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public static Priority valueOf(int code) {
         for (Priority value : Priority.values()) {
             if (value.getCode() == code) {
