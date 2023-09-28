@@ -20,11 +20,6 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Task> findAllTasksByUserId(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
-
-        return user.getTasks();
-    }
     public Task createTask(Long userId, Task task) {
         checkingDeadline(task.getDeadline());
 
@@ -35,17 +30,16 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
+
+    public List<Task> findAllTasksByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+
+        return user.getTasks();
+    }
+
     public Task findTaskById(Long taskId) {
         return taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException(taskId));
-    }
-    public void delete(Long userId, Long taskId) {
-        User userFound = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
-        Task taskToDelete = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
-
-        userFound.removeTask(taskToDelete);
-        taskRepository.delete(taskToDelete);
-
     }
 
     public Task handleTaskIsCompleted(Long taskId){
@@ -54,8 +48,7 @@ public class TaskService {
         task.setIsCompleted(!task.getIsCompleted());
         return taskRepository.save(task);
     }
-
-    public Task update(Long taskId, Task newTaskData) {
+    public Task fullUpdate(Long taskId, Task newTaskData) {
         checkingDeadline(newTaskData.getDeadline());
         return taskRepository.findById(taskId)
                 .map(taskFound -> {
@@ -67,6 +60,41 @@ public class TaskService {
                     taskFound.setPriority(newTaskData.getPriority());
                     return taskRepository.save(taskFound);
                 }).orElseThrow(() -> new ResourceNotFoundException(taskId));
+    }
+
+    public Task partialUpdate(Long taskId, Task data) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
+
+        if(data.getTitle() != null) {
+            task.setTitle(data.getTitle());
+        }
+        if(data.getDescription() != null) {
+            task.setDescription(data.getDescription());
+        }
+        if(data.getDeadline() != null) {
+            task.setDeadline(data.getDeadline());
+        }
+        if(data.getCategory() != null) {
+            task.setCategory(data.getCategory());
+        }
+        if(data.getPriority() != null) {
+            task.setPriority(data.getPriority());
+        }
+        if(data.getTitle() != null) {
+            task.setTitle(data.getTitle());
+        }
+
+        return taskRepository.save(task);
+    }
+
+
+    public void delete(Long userId, Long taskId) {
+        User userFound = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
+        Task taskToDelete = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
+
+        userFound.removeTask(taskToDelete);
+        taskRepository.delete(taskToDelete);
+
     }
 
     public void checkingDeadline(LocalDate deadline) {

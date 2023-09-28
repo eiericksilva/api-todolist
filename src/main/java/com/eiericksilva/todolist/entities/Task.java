@@ -229,6 +229,7 @@ public class Task {
                 ", updatedAt=" + updatedAt +
                 ", user=" + user +
                 ", deadline=" + deadline +
+                ", daysLeft=" + daysLeft +
                 ", category=" + category +
                 ", priority=" + priority +
                 '}';

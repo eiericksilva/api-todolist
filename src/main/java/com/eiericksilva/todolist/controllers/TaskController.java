@@ -15,25 +15,35 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/users/{userId}/tasks")
 public class TaskController {
-
     @Autowired
     private TaskService taskService;
-
-    @GetMapping
-    public ResponseEntity<List<Task>> findAll(@PathVariable Long userId) {
-        List<Task> tasks = taskService.findAllTasksByUserId(userId);
-        return ResponseEntity.ok().body(tasks);
-    }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Task create( @Valid @PathVariable Long userId, @RequestBody Task task) {
         return taskService.createTask(userId, task);
     }
-
+    @GetMapping
+    public ResponseEntity<List<Task>> findAll(@PathVariable Long userId) {
+        List<Task> tasks = taskService.findAllTasksByUserId(userId);
+        return ResponseEntity.ok().body(tasks);
+    }
     @GetMapping("/{taskId}")
     public Task findById(@PathVariable Long taskId) {
         return taskService.findTaskById(taskId);
+    }
+    @PutMapping("/{taskId}")
+    public Task fullUpdate(@PathVariable @Valid Long taskId, @RequestBody Task task) {
+        return taskService.fullUpdate(taskId, task);
+    }
+    @PatchMapping("/{taskId}/completed")
+    public Task handleTaskIsCompleted(@PathVariable Long taskId){
+        return taskService.handleTaskIsCompleted(taskId);
+    }
+
+    @PatchMapping("/{taskId}")
+    public Task partialUpdate(@PathVariable Long taskId, @RequestBody Task data){
+        return taskService.partialUpdate(taskId, data);
     }
 
     @DeleteMapping("/{taskId}")
@@ -42,13 +52,4 @@ public class TaskController {
         taskService.delete(userId, taskId);
     }
 
-    @PutMapping("/{taskId}")
-    public Task update(@PathVariable @Valid Long taskId, @RequestBody Task task) {
-        return taskService.update(taskId, task);
-    }
-
-    @PatchMapping("/{taskId}")
-    public Task handleTaskIsCompleted(@PathVariable Long taskId){
-        return taskService.handleTaskIsCompleted(taskId);
-    }
 }
