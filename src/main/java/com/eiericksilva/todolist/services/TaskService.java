@@ -69,6 +69,7 @@ public class TaskService {
             task.setTitle(data.getTitle());
         }
         if(data.getDescription() != null) {
+            checkingDeadline(data.getDeadline());
             task.setDescription(data.getDescription());
         }
         if(data.getDeadline() != null) {
