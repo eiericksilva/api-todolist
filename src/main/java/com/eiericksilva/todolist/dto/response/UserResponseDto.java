@@ -1,13 +1,15 @@
 package com.eiericksilva.todolist.dto.response;
 
 import com.eiericksilva.todolist.entities.Task;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class UserResponseDto {
     private Long id;
     private String name;
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     public UserResponseDto() {
     }

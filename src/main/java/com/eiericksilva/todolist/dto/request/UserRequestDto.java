@@ -2,12 +2,13 @@ package com.eiericksilva.todolist.dto.request;
 
 import com.eiericksilva.todolist.entities.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserRequestDto {
     private String name;
     private String password;
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     public UserRequestDto() {
     }
