@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
         String error = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
-        SchemaError err = new SchemaError(LocalDateTime.now(), status.value(), error, e.getMessage(),
+        SchemaError err = new SchemaError(LocalDateTime.now(), status.value(), e.getMessage(),
                 request.getRequestURI());
 
         return ResponseEntity.status(status).body(err);
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
         String error = "deadline cannot be earlier than the current date";
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        SchemaError err = new SchemaError(LocalDateTime.now(), status.value(), error, e.getMessage(),
+        SchemaError err = new SchemaError(LocalDateTime.now(), status.value(), e.getMessage(),
                 request.getRequestURI());
 
         return ResponseEntity.status(status).body(err);
