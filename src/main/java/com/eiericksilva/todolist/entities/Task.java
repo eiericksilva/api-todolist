@@ -19,6 +19,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -30,10 +31,10 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Title is a required field. Please, insert your task title")
+    @NotBlank(message = "is a required field. Please, insert your task title")
     private String title;
 
-    @NotEmpty(message = "Description is a required field. Please, insert your task description")
+    @NotBlank(message = "is a required field. Please, insert your task description")
     private String description;
 
     private Boolean isCompleted;

@@ -20,7 +20,7 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Task create( @Valid @PathVariable Long userId, @RequestBody Task task) {
+    public Task create(@PathVariable Long userId, @RequestBody @Valid Task task) {
         return taskService.createTask(userId, task);
     }
     @GetMapping
@@ -33,19 +33,17 @@ public class TaskController {
         return taskService.findTaskById(taskId);
     }
     @PutMapping("/{taskId}")
-    public Task fullUpdate(@PathVariable @Valid Long taskId, @RequestBody Task task) {
+    public Task fullUpdate(@PathVariable Long taskId, @RequestBody @Valid Task task) {
         return taskService.fullUpdate(taskId, task);
     }
     @PatchMapping("/{taskId}/completed")
     public Task handleTaskIsCompleted(@PathVariable Long taskId){
         return taskService.handleTaskIsCompleted(taskId);
     }
-
     @PatchMapping("/{taskId}")
     public Task partialUpdate(@PathVariable Long taskId, @RequestBody Task data){
         return taskService.partialUpdate(taskId, data);
     }
-
     @DeleteMapping("/{taskId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long userId, @PathVariable Long taskId) {
