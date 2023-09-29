@@ -1,7 +1,7 @@
 package com.eiericksilva.todolist.entities.enums;
 
 public enum Priority {
-    ONE(1), TWO(2), THREE(3), FOUR(4);
+    LOW(1), MEDIUM(2), HIGH(3), VERY_HIGH(4);
 
     private int code;
 
