@@ -19,7 +19,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<SchemaError> handleResourceNotFound(ResourceNotFoundException e,
             HttpServletRequest request) {
-        String error = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
         SchemaError err = new SchemaError(LocalDateTime.now(), status.value(), e.getMessage(),
                 request.getRequestURI());
@@ -30,7 +29,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataInvalidException.class)
     public ResponseEntity<SchemaError> handleDataInvalid(DataInvalidException e,
             HttpServletRequest request) {
-        String error = "deadline cannot be earlier than the current date";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         SchemaError err = new SchemaError(LocalDateTime.now(), status.value(), e.getMessage(),
                 request.getRequestURI());
