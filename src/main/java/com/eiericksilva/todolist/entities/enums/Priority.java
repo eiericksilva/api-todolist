@@ -1,25 +1,32 @@
 package com.eiericksilva.todolist.entities.enums;
 
 public enum Priority {
-    LOW(1), MEDIUM(2), HIGH(3), VERY_HIGH(4);
+    LOW(1, "Low"),
+    MEDIUM(2, "Medium"),
+    HIGH(3, "High"),
+    VERY_HIGH(4, "Very High");
 
-    private int code;
-
-    private Priority(int code) {
-        this.code = code;
+    private Priority(int priorityCode, String priorityDescription) {
+        this.priorityCode = priorityCode;
+        this.priorityDescription = priorityDescription;
     }
 
-    public int getCode() {
-        return code;
+    private final int priorityCode;
+    private final String priorityDescription;
+
+    public int getPriorityCode() {
+        return priorityCode;
+    }
+    public String getPriorityDescription() {
+        return priorityDescription;
     }
 
-    public static Priority valueOf(int code) {
+    public static Priority valueOf(int priorityCode) {
         for (Priority value : Priority.values()) {
-            if (value.getCode() == code) {
+            if (value.getPriorityCode() == priorityCode) {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Invalid OrderStatus Code");
+        throw new IllegalArgumentException("Invalid Priority Code");
     }
-
 }
