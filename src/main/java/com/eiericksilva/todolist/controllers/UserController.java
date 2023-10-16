@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eiericksilva.todolist.services.UserService;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.validation.Valid;
 
 @RestController
@@ -42,10 +41,6 @@ public class UserController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public UserResponseDto create(@RequestBody @Valid UserRequestDto userRequestDto) {
-
-        var passwordHashed = BCrypt.withDefaults().hashToString(12, userRequestDto.getPassword().toCharArray());
-
-        userRequestDto.setPassword(passwordHashed);
         return userService.create(userRequestDto);
     }
 

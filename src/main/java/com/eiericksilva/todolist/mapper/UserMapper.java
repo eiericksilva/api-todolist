@@ -2,10 +2,7 @@ package com.eiericksilva.todolist.mapper;
 
 import com.eiericksilva.todolist.dto.request.UserRequestDto;
 import com.eiericksilva.todolist.dto.response.UserResponseDto;
-import com.eiericksilva.todolist.entities.Task;
 import com.eiericksilva.todolist.entities.User;
-
-import java.util.List;
 
 public class UserMapper {
 

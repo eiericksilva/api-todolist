@@ -5,12 +5,15 @@ import java.util.stream.Collectors;
 
 import com.eiericksilva.todolist.dto.request.UserRequestDto;
 import com.eiericksilva.todolist.dto.response.UserResponseDto;
+import com.eiericksilva.todolist.entities.User;
 import com.eiericksilva.todolist.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.UserRepository;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 @Service
 public class UserService {
@@ -30,7 +33,16 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    public User findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
     public UserResponseDto create(UserRequestDto userRequestDto) {
+
+        var passwordHashed = BCrypt.withDefaults().hashToString(12, userRequestDto.getPassword().toCharArray());
+
+        userRequestDto.setPassword(passwordHashed);
+
         var userEntity = UserMapper.toUser(userRequestDto);
         userRepository.save(userEntity);
         return UserMapper.toUserResponseDto(userEntity);

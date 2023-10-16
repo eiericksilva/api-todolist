@@ -28,11 +28,11 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         User u1 = new User();
-        u1.setName("João");
+        u1.setName("Erick");
         u1.setPassword("12345");
 
         User u2 = new User();
-        u2.setName("Maria");
+        u2.setName("Evelyn");
         u2.setPassword("12345");
 
         Task t1 = new Task();

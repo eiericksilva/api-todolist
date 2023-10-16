@@ -21,33 +21,39 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Task create(@PathVariable Long userId, @RequestBody @Valid Task task) {
+        System.out.println("Chegou no Controller");
         return taskService.createTask(userId, task);
     }
+
     @GetMapping
     public ResponseEntity<List<Task>> findAll(@PathVariable Long userId) {
         List<Task> tasks = taskService.findAllTasksByUserId(userId);
         return ResponseEntity.ok().body(tasks);
     }
+
     @GetMapping("/{taskId}")
     public Task findById(@PathVariable Long taskId) {
         return taskService.findTaskById(taskId);
     }
+
     @PutMapping("/{taskId}")
     public Task fullUpdate(@PathVariable Long taskId, @RequestBody @Valid Task task) {
         return taskService.fullUpdate(taskId, task);
     }
+
     @PatchMapping("/{taskId}/completed")
-    public Task handleTaskIsCompleted(@PathVariable Long taskId){
+    public Task handleTaskIsCompleted(@PathVariable Long taskId) {
         return taskService.handleTaskIsCompleted(taskId);
     }
+
     @PatchMapping("/{taskId}")
-    public Task partialUpdate(@PathVariable Long taskId, @RequestBody Task data){
+    public Task partialUpdate(@PathVariable Long taskId, @RequestBody Task data) {
         return taskService.partialUpdate(taskId, data);
     }
+
     @DeleteMapping("/{taskId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long userId, @PathVariable Long taskId) {
         taskService.delete(userId, taskId);
     }
-
 }
