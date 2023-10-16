@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.UserRepository;
+import com.eiericksilva.todolist.utils.PasswordEncryption;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -38,8 +39,9 @@ public class UserService {
     }
 
     public UserResponseDto create(UserRequestDto userRequestDto) {
+        String password = userRequestDto.getPassword();
 
-        var passwordHashed = BCrypt.withDefaults().hashToString(12, userRequestDto.getPassword().toCharArray());
+        var passwordHashed = PasswordEncryption.encryptPassword(password);
 
         userRequestDto.setPassword(passwordHashed);
 
@@ -55,10 +57,14 @@ public class UserService {
     }
 
     public UserResponseDto update(Long id, UserRequestDto newUserData) {
+        String password = newUserData.getPassword();
+
+        var passwordHashed = PasswordEncryption.encryptPassword(password);
+
         return userRepository.findById(id)
                 .map(userFound -> {
                     userFound.setName(newUserData.getName());
-                    userFound.setPassword(newUserData.getPassword());
+                    userFound.setPassword(passwordHashed);
 
                     return UserMapper.toUserResponseDto(userRepository.save(userFound));
                 })
