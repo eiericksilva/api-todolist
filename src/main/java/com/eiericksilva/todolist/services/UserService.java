@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import com.eiericksilva.todolist.dto.request.UserRequestDto;
 import com.eiericksilva.todolist.dto.response.UserResponseDto;
-import com.eiericksilva.todolist.entities.User;
 import com.eiericksilva.todolist.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,10 +29,6 @@ public class UserService {
     public UserResponseDto findById(Long id) {
         return userRepository.findById(id).map(UserMapper::toUserResponseDto)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
-    }
-
-    public User findByName(String name) {
-        return userRepository.findByName(name);
     }
 
     public UserResponseDto create(UserRequestDto userRequestDto) {
