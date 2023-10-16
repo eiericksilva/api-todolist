@@ -14,8 +14,6 @@ import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.UserRepository;
 import com.eiericksilva.todolist.utils.PasswordEncryption;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-
 @Service
 public class UserService {
 

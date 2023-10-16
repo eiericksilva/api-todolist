@@ -6,6 +6,8 @@ import com.eiericksilva.todolist.exceptions.DataInvalidException;
 import com.eiericksilva.todolist.exceptions.ResourceNotFoundException;
 import com.eiericksilva.todolist.repositories.TaskRepository;
 import com.eiericksilva.todolist.repositories.UserRepository;
+import com.eiericksilva.todolist.utils.VerifyNullPropertyNames;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,12 +44,13 @@ public class TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException(taskId));
     }
 
-    public Task handleTaskIsCompleted(Long taskId){
+    public Task handleTaskIsCompleted(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
 
         task.setIsCompleted(!task.getIsCompleted());
         return taskRepository.save(task);
     }
+
     public Task fullUpdate(Long taskId, Task newTaskData) {
         checkingDeadline(newTaskData.getDeadline());
         return taskRepository.findById(taskId)
@@ -62,32 +65,13 @@ public class TaskService {
                 }).orElseThrow(() -> new ResourceNotFoundException(taskId));
     }
 
-    public Task partialUpdate(Long taskId, Task data) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
+    public Task partialUpdate(Long taskId, Task newData) {
+        Task originalTask = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException(taskId));
 
-        if(data.getTitle() != null) {
-            task.setTitle(data.getTitle());
-        }
-        if(data.getDescription() != null) {
-            checkingDeadline(data.getDeadline());
-            task.setDescription(data.getDescription());
-        }
-        if(data.getDeadline() != null) {
-            task.setDeadline(data.getDeadline());
-        }
-        if(data.getCategory() != null) {
-            task.setCategory(data.getCategory());
-        }
-        if(data.getPriority() != null) {
-            task.setPriority(data.getPriority());
-        }
-        if(data.getTitle() != null) {
-            task.setTitle(data.getTitle());
-        }
+        VerifyNullPropertyNames.copyNonNullProperties(newData, originalTask);
 
-        return taskRepository.save(task);
+        return taskRepository.save(originalTask);
     }
-
 
     public void delete(Long userId, Long taskId) {
         User userFound = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException(userId));
